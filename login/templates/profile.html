@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    <title>Профіль - Гуртожиток Цифровий</title>
+    <script></script>
+</head>
+<body>
+    <button class="menu-toggle" id="menuToggle" aria-label="Перемкнути меню">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="sidebar" id="sidebar">
+        <nav class="navbar">
+            <div class="navbar-title">
+                Гуртожиток Цифровий
+            </div>
+            <ul class="navbar-links">
+                <li><a href="{{ url_for('index') }}">Головна</a></li>
+                <li><a href="{{ url_for('profile') }}" class="active">Профіль</a></li>
+                <li><a href="{{ url_for('logout') }}">Вийти</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="form-upload">
+        <div class="profile-info-card">
+            <p class="profile-info-label">Особисті дані</p>
+            <h1 class="profile-info-name">
+                {{ (user.last_name or 'Прізвище') }} {{ (user.first_name or 'Імʼя') }}
+            </h1>
+            <p class="profile-info-email">{{ user.email }}</p>
+        </div>
+
+        <form method="post" id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="document" accept="application/pdf" required>
+            <button type="submit">Завантажити скан перепусти</button>
+        </form>
+
+        <div class="preview-wrapper" id="previewWrapper">
+            <p class="preview-label">Попередній перегляд</p>
+            <iframe id="preview" class="preview-frame" title="Попередній перегляд PDF" style="display: none;"></iframe>
+        </div>
+    </div>
+
+
+    <script src="{{ url_for('static', filename='script/profile.js') }}"></script></body>
+</html>
+

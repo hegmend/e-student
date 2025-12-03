@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Гуртожиток Цифровий - {{ page_title }}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='style/auth.css') }}" rel="stylesheet" />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0057B7",
+              "accent": "#FFD700",
+              "background-light": "#F0F2F5",
+              "background-dark": "#101922",
+              "text-light": "#333333",
+              "text-dark": "#E5E7EB",
+              "text-muted-light": "#6b7280",
+              "text-muted-dark": "#9ca3af",
+              "border-light": "#D1D5DB",
+              "border-dark": "#4B5563"
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+    <div class="relative flex min-h-screen w-full flex-col items-center justify-center p-4">
+        <div class="w-full max-w-md">
+            <div class="mb-6 flex flex-col items-center">
+                <svg class="h-10 w-10 text-primary mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <h1 class="text-2xl font-bold text-text-light dark:text-text-dark">Гуртожиток Цифровий</h1>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="mb-4 rounded-lg p-4 {% if category == 'error' %}bg-red-100 text-red-800{% else %}bg-green-100 text-green-800{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <div class="rounded-xl border border-border-light dark:border-border-dark bg-white dark:bg-background-dark shadow-sm">
+                <div class="p-6">
+                    <h2 class="text-text-light dark:text-text-dark text-xl font-bold text-center">
+                        {% if is_signup %}Sign Up{% else %}Welcome Back{% endif %}
+                    </h2>
+                    <p class="text-center text-sm text-text-muted-light dark:text-text-muted-dark mt-1">
+                        {% if is_signup %}Create your account{% else %}Sign in to access your account{% endif %}
+                    </p>
+                    
+                    <div class="mt-6 flex h-10 w-full items-center justify-center rounded-lg bg-background-light dark:bg-gray-800 p-1">
+                        <a href="{{ url_for('login') }}" class="flex h-full flex-1 items-center justify-center rounded-lg px-2 text-sm font-medium leading-normal {% if not is_signup %}bg-white text-primary shadow-sm dark:bg-gray-700{% else %}text-text-muted-light dark:text-text-muted-dark{% endif %}">
+                            <span class="truncate">Sign In</span>
+                        </a>
+                        <a href="{{ url_for('register') }}" class="flex h-full flex-1 items-center justify-center rounded-lg px-2 text-sm font-medium leading-normal {% if is_signup %}bg-white text-primary shadow-sm dark:bg-gray-700{% else %}text-text-muted-light dark:text-text-muted-dark{% endif %}">
+                            <span class="truncate">Sign Up</span>
+                        </a>
+                    </div>
+                    
+                    <form method="POST" class="mt-6 space-y-4">
+                        {% if is_signup %}
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <label class="flex flex-col">
+                                <p class="text-sm font-medium pb-2 text-text-light dark:text-text-dark">First Name</p>
+                                <div class="relative flex w-full items-center">
+                                    <span class="material-symbols-outlined absolute left-3 text-text-muted-light dark:text-text-muted-dark">badge</span>
+                                    <input name="first_name" required class="form-input flex w-full flex-1 rounded-lg border border-border-light bg-background-light text-text-light focus:border-primary focus:ring-primary/50 focus:ring-2 dark:border-border-dark dark:bg-gray-800 dark:text-text-dark dark:focus:border-primary h-12 placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark pl-10 text-sm font-normal" placeholder="Ivan" type="text" />
+                                </div>
+                            </label>
+
+                            <label class="flex flex-col">
+                                <p class="text-sm font-medium pb-2 text-text-light dark:text-text-dark">Last Name</p>
+                                <div class="relative flex w-full items-center">
+                                    <span class="material-symbols-outlined absolute left-3 text-text-muted-light dark:text-text-muted-dark">badge</span>
+                                    <input name="last_name" required class="form-input flex w-full flex-1 rounded-lg border border-border-light bg-background-light text-text-light focus:border-primary focus:ring-primary/50 focus:ring-2 dark:border-border-dark dark:bg-gray-800 dark:text-text-dark dark:focus:border-primary h-12 placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark pl-10 text-sm font-normal" placeholder="Shevchenko" type="text" />
+                                </div>
+                            </label>
+                        </div>
+                        {% endif %}
+
+                        <div>
+                            <label class="flex flex-col">
+                                <p class="text-sm font-medium pb-2 text-text-light dark:text-text-dark">Email Address</p>
+                                <div class="relative flex w-full items-center">
+                                    <span class="material-symbols-outlined absolute left-3 text-text-muted-light dark:text-text-muted-dark">mail</span>
+                                    <input name="email" required class="form-input flex w-full flex-1 rounded-lg border border-border-light bg-background-light text-text-light focus:border-primary focus:ring-primary/50 focus:ring-2 dark:border-border-dark dark:bg-gray-800 dark:text-text-dark dark:focus:border-primary h-12 placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark pl-10 text-sm font-normal" placeholder="your.email@example.com" type="email" />
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div>
+                            <label class="flex flex-col">
+                                <p class="text-sm font-medium pb-2 text-text-light dark:text-text-dark">Password</p>
+                                <div class="relative flex w-full flex-1 items-stretch">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">lock</span>
+                                    <input name="password" required class="form-input flex w-full flex-1 rounded-lg border border-border-light bg-background-light text-text-light focus:border-primary focus:ring-primary/50 focus:ring-2 dark:border-border-dark dark:bg-gray-800 dark:text-text-dark dark:focus:border-primary h-12 placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark pl-10 pr-10 text-sm font-normal" placeholder="Enter your password" type="password" />
+                                    <button class="absolute right-0 top-0 flex h-full items-center justify-center pr-3 text-text-muted-light dark:text-text-muted-dark" type="button" onclick="togglePassword(this)">
+                                        <span class="material-symbols-outlined text-xl">visibility_off</span>
+                                    </button>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        {% if is_signup %}
+                        <div>
+                            <label class="flex flex-col">
+                                <p class="text-sm font-medium pb-2 text-text-light dark:text-text-dark">Confirm Password</p>
+                                <div class="relative flex w-full flex-1 items-stretch">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">lock</span>
+                                    <input name="confirm_password" required class="form-input flex w-full flex-1 rounded-lg border border-border-light bg-background-light text-text-light focus:border-primary focus:ring-primary/50 focus:ring-2 dark:border-border-dark dark:bg-gray-800 dark:text-text-dark dark:focus:border-primary h-12 placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark pl-10 pr-10 text-sm font-normal" placeholder="Confirm your password" type="password" />
+                                    <button class="absolute right-0 top-0 flex h-full items-center justify-center pr-3 text-text-muted-light dark:text-text-muted-dark" type="button" onclick="togglePassword(this)">
+                                        <span class="material-symbols-outlined text-xl">visibility_off</span>
+                                    </button>
+                                </div>
+                            </label>
+                        </div>
+                        {% endif %}
+                        
+                        {% if not is_signup %}
+                        <div class="flex items-center justify-between pt-1">
+                            <div></div>
+                            <a class="text-sm font-medium text-primary hover:underline" href="#">Forgot Password?</a>
+                        </div>
+                        {% endif %}
+                        
+                        <button class="flex w-full items-center justify-center rounded-lg bg-primary h-12 text-sm font-semibold text-white transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 dark:focus:ring-offset-background-dark" type="submit">
+                            {% if is_signup %}Create Account{% else %}Sign In{% endif %}
+                        </button>
+                    </form>
+                    
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-border-light dark:border-border-dark"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                        </div>
+                    </div>
+                    
+                   
+                </div>
+                
+                <div class="border-t border-border-light dark:border-border-dark bg-background-light dark:bg-gray-800/50 px-6 py-4 rounded-b-xl">
+                    <p class="text-center text-sm text-text-muted-light dark:text-text-muted-dark">
+                        {% if is_signup %}
+                            Already have an account? <a class="font-semibold text-primary hover:underline" href="{{ url_for('login') }}">Sign In</a>
+                        {% else %}
+                            Don't have an account? <a class="font-semibold text-primary hover:underline" href="{{ url_for('register') }}">Sign Up</a>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function togglePassword(button) {
+            const input = button.parentElement.querySelector('input');
+            const icon = button.querySelector('span');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility_off';
+            }
+        }
+    </script>
+</body>
+</html>

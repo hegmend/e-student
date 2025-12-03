@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Dashboard - Гуртожиток Цифровий</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-lg p-8 max-w-md w-full dashboard-card">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Welcome!</h1>
+            <p class="text-gray-600 mb-2">You are successfully logged in.</p>
+            <p class="text-gray-600 mb-6">Email: <strong>{{ email }}</strong></p>
+            <a href="{{ url_for('logout') }}" class="block w-full text-center bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
+                Logout
+            </a>
+        </div>
+    </div>
+</body>
+</html>
