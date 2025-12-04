@@ -5,48 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
     <title>Профіль - Гуртожиток Цифровий</title>
-    <script></script>
 </head>
 <body>
-    <button class="menu-toggle" id="menuToggle" aria-label="Перемкнути меню">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
-    <div class="menu-overlay" id="menuOverlay"></div>
-    <div class="sidebar" id="sidebar">
-        <nav class="navbar">
-            <div class="navbar-title">
-                Гуртожиток Цифровий
+    <div class="profile-container">
+        <header class="profile-header">
+            <h1 class="greeting">Привіт, {{ user.first_name or 'Іван' }} {{ user.last_name or 'Федосєєв' }}!</h1>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Вийти</a>
+        </header>
+
+        <main class="profile-content">
+            <div class="card student-card">
+                <h2 class="card-title">Студентський квиток</h2>
+                <div class="card-content">
+                    <p class="info-line"><span class="info-label">Ім'я:</span> {{ user.first_name or 'Іван' }} {{ user.last_name or 'Федосєєв' }}</p>
+                    <p class="info-line"><span class="info-label">Email:</span> {{ user.email }}</p>
+                </div>
             </div>
-            <ul class="navbar-links">
-                <li><a href="{{ url_for('index') }}">Головна</a></li>
-                <li><a href="{{ url_for('profile') }}" class="active">Профіль</a></li>
-                <li><a href="{{ url_for('logout') }}">Вийти</a></li>
-            </ul>
-        </nav>
+
+            <div class="card news-card">
+                <h2 class="card-title">Новини</h2>
+                <ul class="news-list">
+                    <li class="news-item">
+                        <span class="news-icon">📌</span>
+                        <span>Завтра пари за розкладом</span>
+                    </li>
+                    <li class="news-item">
+                        <span class="news-icon">📌</span>
+                        <span>До 10 числа треба здати лабораторні</span>
+                    </li>
+                    <li class="news-item">
+                        <span class="news-icon">📌</span>
+                        <span>Студентська рада проводить опитування</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card pass-card">
+                <h2 class="card-title">Пропуск у гуртожиток</h2>
+                <div class="card-content">
+                    <p class="info-line">
+                        <span class="info-label">Статус:</span> 
+                        <span class="status-allowed">Дозволено</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card upload-card">
+                <h2 class="card-title">Завантажити скан перепустки</h2>
+                <form method="post" id="uploadForm" enctype="multipart/form-data" class="upload-form">
+                    <input type="file" name="document" accept="application/pdf" required class="file-input">
+                    <button type="submit" class="upload-btn">Завантажити</button>
+                </form>
+            </div>
+
+            <div class="card preview-card">
+                <h2 class="card-title">Попередній перегляд</h2>
+                <div class="preview-wrapper">
+                    <iframe id="preview" class="preview-frame" title="Попередній перегляд PDF" style="display: none;"></iframe>
+                </div>
+            </div>
+        </main>
     </div>
-    <div class="form-upload">
-        <div class="profile-info-card">
-            <p class="profile-info-label">Особисті дані</p>
-            <h1 class="profile-info-name">
-                {{ (user.last_name or 'Прізвище') }} {{ (user.first_name or 'Імʼя') }}
-            </h1>
-            <p class="profile-info-email">{{ user.email }}</p>
-        </div>
 
-        <form method="post" id="uploadForm" enctype="multipart/form-data">
-            <input type="file" name="document" accept="application/pdf" required>
-            <button type="submit">Завантажити скан перепусти</button>
-        </form>
-
-        <div class="preview-wrapper" id="previewWrapper">
-            <p class="preview-label">Попередній перегляд</p>
-            <iframe id="preview" class="preview-frame" title="Попередній перегляд PDF" style="display: none;"></iframe>
-        </div>
-    </div>
-
-
-    <script src="{{ url_for('static', filename='script/profile.js') }}"></script></body>
+    <script src="{{ url_for('static', filename='script/profile.js') }}"></script>
+</body>
 </html>
-
