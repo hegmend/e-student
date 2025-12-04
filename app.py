@@ -6,21 +6,24 @@ app.secret_key = "somesecretkey"
 
 # --- CREATE DB ---
 def init_db():
-    conn = sqlite3.connect("database.db")
-    c = conn.cursor()
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS users(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        email TEXT UNIQUE,
-        password TEXT,
-        group_name TEXT
-    )
-    """)
-    conn.commit()
-    conn.close()
+    with sqlite3.connect("database.db") as conn:
+        c = conn.cursor()
+        c.execute("""
+        CREATE TABLE IF NOT EXISTS users(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            email TEXT UNIQUE,
+            password TEXT,
+            group_name TEXT
+        )
+        """)
+        conn.commit()
 
 init_db()
+
+# --- Helper для підключення ---
+def get_connection():
+    return sqlite3.connect("database.db", timeout=10)
 
 # --- ROUTES ---
 
@@ -36,14 +39,19 @@ def register():
         password = request.form["password"]
         group_name = request.form["group"]
 
-        conn = sqlite3.connect("database.db")
-        c = conn.cursor()
-        c.execute("INSERT INTO users (name, email, password, group_name) VALUES (?, ?, ?, ?)",
-                  (name, email, password, group_name))
-        conn.commit()
-        conn.close()
-
-        return redirect("/login")
+        try:
+            with get_connection() as conn:
+                c = conn.cursor()
+                c.execute(
+                    "INSERT INTO users (name, email, password, group_name) VALUES (?, ?, ?, ?)",
+                    (name, email, password, group_name)
+                )
+                conn.commit()
+            return redirect("/login")
+        except sqlite3.OperationalError as e:
+            return f"Помилка бази даних: {e}"
+        except sqlite3.IntegrityError:
+            return "Користувач з таким email вже існує"
 
     return render_template("register.html")
 
@@ -53,11 +61,10 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-        conn = sqlite3.connect("database.db")
-        c = conn.cursor()
-        c.execute("SELECT * FROM users WHERE email=? AND password=?", (email, password))
-        user = c.fetchone()
-        conn.close()
+        with get_connection() as conn:
+            c = conn.cursor()
+            c.execute("SELECT * FROM users WHERE email=? AND password=?", (email, password))
+            user = c.fetchone()
 
         if user:
             session["user"] = user
