@@ -36,10 +36,12 @@ body.centered {
 .box {
     background: var(--bg-white);
     width: 95%;
+    max-width: 400px; /* обмежуємо ширину на великих екранах */
     padding: 30px 20px;
     border-radius: 14px;
     box-shadow: 0 0 10px var(--shadow-light);
     text-align: center;
+    margin-bottom: 20px;
 }
 
 h1 {
@@ -151,4 +153,59 @@ input {
 
 .allowed {
     color: green;
+}
+
+
+*, *::before, *::after {
+    box-sizing: border-box; /* padding і border враховуються у ширину */
+}
+
+
+
+/* ==========================
+   Мобільна адаптація
+   ========================== */
+@media (max-width: 480px) {
+    body {
+        padding: 8px;
+    }
+
+    .box {
+        width: 100%;           /* займає всю ширину екрану */
+        max-width: 400px;      /* обмеження на дуже великі екрани */
+        padding: 30px 20px;    /* збільшений padding для комфорту */
+        box-shadow: 0 0 8px var(--shadow-light);
+        border-radius: 14px;
+    }
+
+    h1 {
+        font-size: 26px;      /* трохи більший заголовок */
+    }
+
+    .subtitle {
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+
+    .tab {
+        font-size: 16px;
+        padding: 16px;        /* більша зона для натискання пальцем */
+        margin-bottom: 14px;
+    }
+
+    input, .submit, .google {
+        width: 100%;
+        padding: 18px;        /* збільшені поля вводу і кнопки */
+        font-size: 16px;      /* комфортний розмір тексту */
+        margin-bottom: 14px;
+    }
+
+    .or {
+        font-size: 14px;
+        margin: 25px 0 15px;
+    }
+
+    .forgot {
+        font-size: 13px;
+    }
 }
