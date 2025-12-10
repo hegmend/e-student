@@ -3,34 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Вхід | e-Student</title>
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="centered">
+<body class="centered-page"> 
 
-<div class="box">
-    <h1>Welcome Back</h1>
-    <div class="subtitle">Sign in to access your account</div>
+    <div class="auth-box"> 
+        <h1>Welcome Back</h1>
+        <div class="subtitle">Sign in to access your account</div>
 
-    <div class="tabs">
-        <div class="tab active">Sign In</div>
-        <div class="tab" onclick="location.href='/register'">Sign Up</div>
-    </div>
-
-    <form method="POST">
-        <input type="email" name="email" placeholder="Email address" required>
-        <input type="password" name="password" placeholder="Password" required>
-
-        <div class="forgot">
-            <a href="#">Forgot Password?</a>
+        <div class="tabs">
+            <div class="tab active" id="signInTab">Sign In</div> 
+            <div class="tab" id="signUpTab" onclick="location.href='/register'">Sign Up</div> 
         </div>
 
-        <button type="submit" class="submit">Sign In</button>
-    </form>
+        <form method="POST" id="signInForm">
+            <input type="email" name="email" placeholder="Email address" required>
+            <input type="password" name="password" placeholder="Password" required>
 
-    <div class="or">— Or continue with —</div>
+            <div class="forgot">
+                <a href="#">Forgot Password?</a>
+            </div>
 
-    <button class="google">Continue with Google</button>
-</div>
+            <button type="submit" class="submit-btn primary">Sign In</button>
+        </form>
+
+        <div class="or">— Or continue with —</div>
+
+        <button class="submit-btn google">Continue with Google</button>
+    </div>
 
 </body>
 </html>
+
+
+

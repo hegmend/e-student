@@ -7,8 +7,10 @@ app.secret_key = "somesecretkey"
 
 # --- CREATE DB ---
 def init_db():
-    with sqlite3.connect("database.db") as conn:
+    # Змінюємо 'database.db' на 'students.db' для коректності з вашим файлом у VS Code
+    with sqlite3.connect("students.db") as conn: 
         c = conn.cursor()
+        # Примітка: Ваша таблиця називається 'users', і це співпадає з вашим .db файлом
         c.execute("""
         CREATE TABLE IF NOT EXISTS users(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,7 +26,8 @@ init_db()
 
 # --- Helper для підключення ---
 def get_connection():
-    return sqlite3.connect("database.db", timeout=10)
+    # Змінюємо 'database.db' на 'students.db'
+    return sqlite3.connect("students.db", timeout=10)
 
 # --- ROUTES ---
 
@@ -68,7 +71,8 @@ def login():
             user = c.fetchone()
 
         if user:
-            session["user"] = user
+            # Тут user - це кортеж: (id, name, email, password, group_name)
+            session["user"] = user 
             return redirect("/dashboard")
         else:
             return "Неправильний логін або пароль"
@@ -83,6 +87,28 @@ def dashboard():
     user = session["user"]
     return render_template("dashboard.html", user=user)
 
+# ======================================================
+# НОВІ МАРШРУТИ ДЛЯ ПРОФІЛЮ ТА НОВИН
+# ======================================================
+
+@app.route("/profile")
+def profile():
+    if "user" not in session:
+        return redirect("/login")
+    
+    # Інформація про користувача потрібна для заповнення profile.html
+    user = session["user"]
+    return render_template("profile.html", user=user)
+
+@app.route("/news")
+def news():
+    if "user" not in session:
+        return redirect("/login")
+        
+    # Інформація про користувача потрібна для навігації в news.html
+    user = session["user"]
+    return render_template("news.html", user=user)
+
 @app.route("/logout")
 def logout():
     session.pop("user", None)
@@ -90,5 +116,5 @@ def logout():
 
 # --- RUN APP ---
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # беремо порт з оточення хостингу
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)

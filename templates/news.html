@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Головна | e-Student</title>
+    <title>Новини | e-Student</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -10,7 +10,7 @@
 <div class="container">
 
     <nav class="sidebar">
-        <a href="/dashboard" class="menu-item active" title="Головна"> 
+        <a href="/dashboard" class="menu-item" title="Головна"> 
             <img class="icon" src="{{ url_for('static', filename='home.jpg') }}">
             <span class="menu-text">Головна</span>
         </a>
@@ -20,7 +20,7 @@
             <span class="menu-text">Профіль</span>
         </a>
 
-        <a href="/news" class="menu-item" title="Новини">
+        <a href="/news" class="menu-item active" title="Новини">
             <img class="icon" src="{{ url_for('static', filename='news.jpg') }}">
             <span class="menu-text">Новини</span>
         </a>
@@ -42,42 +42,22 @@
     </nav>
 
     <main class="main-content">
-        <h1>Вітаємо, {{ user[1] }}! 👋</h1>
-        
-        <div class="card profile-card">
-            <img class="avatar" src="{{ url_for('static', filename='avatar.jpg') }}"> 
-            <div class="info">
-                <h2>{{ user[1] }}</h2> 
-                <p>Група: **{{ user[4] }}**</p>
-                <p>Email: {{ user[2] }}</p>
-            </div>
-        </div>
+        <h1>Останні Новини Університету</h1>
 
-        <h2>Ваш статус</h2>
-        <div class="kpi-grid">
-            <div class="card kpi-card">
-                <h3>Середній Бал</h3>
-                <p class="kpi-value">4.5 / 5.0</p>
-            </div>
-            <div class="card kpi-card">
-                <h3>Борги</h3>
-                <p class="kpi-value">0</p>
-            </div>
-            <div class="card kpi-card">
-                <h3>Занять сьогодні</h3>
-                <p class="kpi-value">3 пари</p>
-            </div>
-        </div>
-
-        <div class="card news-overview">
-            <h2>📢 Свіжі оголошення</h2>
+        <div class="card news-feed">
+            <h2>Оголошення</h2>
             <ul>
-                <li>**УВАГА:** До 10 числа треба здати лабораторні.</li>
-                <li>Завтра пари за розкладом.</li>
-                <li><a href="/news">Переглянути всі новини...</a></li>
+                <li>📌 Завтра пари за розкладом</li>
+                <li>📌 До 10 числа треба здати лабораторні</li>
+                <li>📌 Студентська рада проводить опитування</li>
             </ul>
         </div>
         
+        <div class="card news-feed">
+            <h2>Розклад</h2>
+            <p>Зміни в розкладі на наступний тиждень доступні у вашому особистому кабінеті.</p>
+        </div>
+
     </main>
 
 </div>

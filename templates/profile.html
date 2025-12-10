@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Головна | e-Student</title>
+    <title>Профіль | e-Student</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -10,12 +10,12 @@
 <div class="container">
 
     <nav class="sidebar">
-        <a href="/dashboard" class="menu-item active" title="Головна"> 
+        <a href="/dashboard" class="menu-item" title="Головна"> 
             <img class="icon" src="{{ url_for('static', filename='home.jpg') }}">
             <span class="menu-text">Головна</span>
         </a>
 
-        <a href="/profile" class="menu-item" title="Профіль"> 
+        <a href="/profile" class="menu-item active" title="Профіль"> 
             <img class="icon" src="{{ url_for('static', filename='avatar.jpg') }}">
             <span class="menu-text">Профіль</span>
         </a>
@@ -42,40 +42,25 @@
     </nav>
 
     <main class="main-content">
-        <h1>Вітаємо, {{ user[1] }}! 👋</h1>
+        <h1>Мій Профіль</h1>
         
-        <div class="card profile-card">
-            <img class="avatar" src="{{ url_for('static', filename='avatar.jpg') }}"> 
-            <div class="info">
-                <h2>{{ user[1] }}</h2> 
-                <p>Група: **{{ user[4] }}**</p>
-                <p>Email: {{ user[2] }}</p>
+        <div class="card profile-details">
+            <div class="profile-card">
+                <img class="large-avatar" src="{{ url_for('static', filename='avatar.jpg') }}">
+                <div class="info">
+                    <h2>{{ user[1] }}</h2> <p><b>№ Пропуску:</b> {{ user[0] }}</p> 
+                    <p><b>Група:</b> {{ user[4] }}</p>
+                    <p><b>Email:</b> {{ user[2] }}</p>
+                    <p><b>Статус:</b> Активний студент</p>
+                </div>
             </div>
         </div>
 
-        <h2>Ваш статус</h2>
-        <div class="kpi-grid">
-            <div class="card kpi-card">
-                <h3>Середній Бал</h3>
-                <p class="kpi-value">4.5 / 5.0</p>
-            </div>
-            <div class="card kpi-card">
-                <h3>Борги</h3>
-                <p class="kpi-value">0</p>
-            </div>
-            <div class="card kpi-card">
-                <h3>Занять сьогодні</h3>
-                <p class="kpi-value">3 пари</p>
-            </div>
-        </div>
-
-        <div class="card news-overview">
-            <h2>📢 Свіжі оголошення</h2>
-            <ul>
-                <li>**УВАГА:** До 10 числа треба здати лабораторні.</li>
-                <li>Завтра пари за розкладом.</li>
-                <li><a href="/news">Переглянути всі новини...</a></li>
-            </ul>
+        <div class="card">
+            <h2>Студентський квиток (Електронний)</h2>
+            <p><b>Ім'я:</b> {{ user[1] }}</p>
+            <p><b>Група:</b> {{ user[4] }}</p>
+            <p><b>Дійсний до:</b> 01.07.2028</p>
         </div>
         
     </main>
