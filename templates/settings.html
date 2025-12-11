@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Налаштування | e-Student</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <nav class="sidebar">
+        <a href="/dashboard" class="menu-item" title="Головна"> 
+            <img class="icon" src="{{ url_for('static', filename='home.jpg') }}">
+            <span class="menu-text">Головна</span>
+        </a>
+        <a href="/profile" class="menu-item" title="Профіль"> 
+            <img class="icon" src="{{ url_for('static', filename='avatar.jpg') }}">
+            <span class="menu-text">Профіль</span>
+        </a>
+        <a href="/news" class="menu-item" title="Новини">
+            <img class="icon" src="{{ url_for('static', filename='news.jpg') }}">
+            <span class="menu-text">Новини</span>
+        </a>
+        <a href="/settings" class="menu-item active" title="Налаштування">
+            <img class="icon" src="{{ url_for('static', filename='settings.jpg') }}">
+            <span class="menu-text">Налаштування</span>
+        </a>
+        <a href="/chats" class="menu-item" title="Чати">
+            <img class="icon" src="{{ url_for('static', filename='chat.jpg') }}">
+            <span class="menu-text">Чати</span>
+        </a>
+        <a href="{{ url_for('logout') }}" class="menu-item logout" title="Вийти">
+            <img class="icon" src="{{ url_for('static', filename='logout.jpg') }}">
+            <span class="menu-text">Вийти</span>
+        </a>
+    </nav>
+
+    <main class="main-content">
+        <h1>🛠️ Налаштування Профілю</h1>
+
+        <div class="card settings-card">
+            <h2>Основні Налаштування</h2>
+            
+            <div class="setting-item">
+                <span>🌐 Мова Інтерфейсу</span>
+                <div class="language-selector">
+                    <button class="lang-button" onclick="cycleLanguage(-1)">&lt;</button> 
+                    <span id="current-lang">Українська</span>
+                    <button class="lang-button" onclick="cycleLanguage(1)">&gt;</button>
+                </div>
+            </div>
+            
+            <a href="#" class="setting-item" onclick="toggleTheme()">
+                <span>🌓 Тема Сайту</span>
+                <span class="setting-value" id="theme-value">Світла <i class="arrow-icon">▶</i></span>
+            </a>
+
+            <div class="setting-item notification-toggle-row">
+                <span>🔔 Керування Сповіщеннями</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="notification-checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item copy-link-row" onclick="copyPasswordLink('http://192.168.1.2:5000/login')">
+                <span>🔗 Посилання на сайт</span>
+                <span class="setting-value" id="copy-status">
+                    Копіювати <i class="arrow-icon">▶</i>
+                </span>
+            </div>
+        </div>
+
+        <div class="card support-card">
+            <h2>Допомога та Інформація</h2>
+
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=gorishcnuymukola@gmail.com&su=Запит+на+підтримку+від+студента+e-Student" target="_blank" class="setting-item">
+                <span>✉️ Написати в Підтримку (Gmail)</span>
+                <span class="setting-value"><i class="arrow-icon">▶</i></span>
+            </a>
+
+            <a href="#" class="setting-item open-modal" data-modal="aboutModal">
+                <span>ℹ️ Про Нас</span>
+                <span class="setting-value">Версія 1.0 <i class="arrow-icon">▶</i></span>
+            </a>
+        </div>
+
+    </main>
+
+</div>
+
+<div id="aboutModal" class="modal">
+    <div class="modal-content about-content">
+        <span class="close-btn">&times;</span>
+        <h2>ℹ️ Про e-Student</h2>
+        
+        <div class="team-info">
+            <img src="{{ url_for('static', filename='team_photo.jpg') }}" alt="Фото команди" class="team-photo">
+            <div>
+                <p>Цей додаток було створено з любов'ю та натхненням командою **"Команда 2"**!</p>
+                
+                <h3>Наша команда:</h3>
+                <ul>
+                    <li>**Артур** (Frontend Lead)</li>
+                    <li>**Микола** (Backend Engineer)</li>
+                    <li>**Іван** (UI/UX Designer)</li>
+                    <li>**Анна** (Quality Assurance)</li>
+                    <li>**Марія** (Product Manager)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <p class="app-version">Версія програми: 1.0.0 (Стабільна)</p>
+    </div>
+</div>
+
+<script>
+    // МАСИВ ДОСТУПНИХ МОВ
+    const languages = ['Українська', 'English', 'Polski', 'Deutsch'];
+    let currentLangIndex = 0;
+
+    // ФУНКЦІЯ ДЛЯ ЦИКЛІЧНОГО ПЕРЕКЛЮЧЕННЯ
+    function cycleLanguage(direction) {
+        currentLangIndex += direction;
+        
+        if (currentLangIndex < 0) {
+            currentLangIndex = languages.length - 1;
+        } else if (currentLangIndex >= languages.length) {
+            currentLangIndex = 0;
+        }
+        
+        document.getElementById('current-lang').textContent = languages[currentLangIndex];
+    }
+
+    // ⭐ НОВА ФУНКЦІЯ: НАДІЙНЕ КОПІЮВАННЯ ЗА ДОПОМОГОЮ execCommand
+    function copyPasswordLink(link) {
+        const copyStatusElement = document.getElementById('copy-status');
+        const originalText = 'Копіювати ►';
+
+        // 1. Створюємо тимчасовий елемент textarea
+        const textarea = document.createElement('textarea');
+        textarea.value = link;
+        // Робимо його невидимим і поза екраном
+        textarea.style.position = 'fixed';
+        textarea.style.top = '0';
+        textarea.style.left = '0';
+        document.body.appendChild(textarea);
+
+        // 2. Виділяємо текст і копіюємо
+        textarea.select();
+        let successful = false;
+        try {
+            // execCommand('copy') - це старий, але дуже надійний метод
+            successful = document.execCommand('copy');
+        } catch (err) {
+            console.error('Не вдалося скопіювати текст:', err);
+        }
+
+        // 3. Видаляємо тимчасовий елемент
+        document.body.removeChild(textarea);
+
+        // 4. Оновлюємо статус
+        if (successful) {
+            copyStatusElement.innerHTML = '✅Скопійовано!';
+        } else {
+            // Резервний варіант, якщо execCommand не спрацював
+            copyStatusElement.innerHTML = '❌ Помилка копіювання!';
+        }
+        
+        // Повертаємо початковий текст через 2 секунди
+        setTimeout(() => {
+            copyStatusElement.innerHTML = originalText;
+        }, 2000);
+    }
+
+    // 1. Скрипт для перемикання теми 
+    function toggleTheme() {
+        const body = document.body;
+        const themeValue = document.getElementById('theme-value');
+        if (body.classList.contains('dark-theme')) {
+            body.classList.remove('dark-theme');
+            themeValue.textContent = 'Світла ►';
+        } else {
+            body.classList.add('dark-theme');
+            themeValue.textContent = 'Чорна ►';
+        }
+    }
+
+    // 2. Скрипт для модального вікна 
+    const modal = document.getElementById('aboutModal');
+    const btn = document.querySelector('.open-modal[data-modal="aboutModal"]');
+    const span = document.querySelector('.close-btn');
+    
+    // Перевірка, чи існує кнопка перед додаванням обробника
+    if (btn) {
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+    }
+
+    if (span) {
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>

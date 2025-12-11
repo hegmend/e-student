@@ -1,12 +1,13 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 import sqlite3
+import os
 
 app = Flask(__name__)
 app.secret_key = "somesecretkey"
 
 # --- CREATE DB ---
 def init_db():
-    with sqlite3.connect("database.db") as conn:
+    with sqlite3.connect("students.db") as conn: 
         c = conn.cursor()
         c.execute("""
         CREATE TABLE IF NOT EXISTS users(
@@ -23,7 +24,7 @@ init_db()
 
 # --- Helper для підключення ---
 def get_connection():
-    return sqlite3.connect("database.db", timeout=10)
+    return sqlite3.connect("students.db", timeout=10)
 
 # --- ROUTES ---
 
@@ -67,25 +68,57 @@ def login():
             user = c.fetchone()
 
         if user:
-            session["user"] = user
+            session["user"] = user 
             return redirect("/dashboard")
         else:
             return "Неправильний логін або пароль"
 
     return render_template("login.html")
 
-@app.route("/dashboard")
-def dashboard():
+# ======================================================
+# МАРШРУТИ З ПЕРЕВІРКОЮ АВТОРИЗАЦІЇ
+# ======================================================
+
+def check_auth_and_render(template_name):
     if "user" not in session:
         return redirect("/login")
-
+    
     user = session["user"]
-    return render_template("dashboard.html", user=user)
+    # Передаємо user в шаблон для доступу до даних (наприклад, user[1] - ім'я)
+    return render_template(template_name, user=user)
+
+@app.route("/dashboard")
+def dashboard():
+    return check_auth_and_render("dashboard.html")
+
+@app.route("/profile")
+def profile():
+    return check_auth_and_render("profile.html")
+
+@app.route("/news")
+def news():
+    return check_auth_and_render("news.html")
+
+@app.route("/settings")
+def settings():
+    # Це новий маршрут
+    return check_auth_and_render("settings.html")
+
+@app.route("/chats")
+def chats():
+    # Це новий маршрут
+    return check_auth_and_render("chats.html")
+
+# ======================================================
+# ВИХІД
+# ======================================================
 
 @app.route("/logout")
 def logout():
     session.pop("user", None)
     return redirect("/login")
 
+# --- RUN APP ---
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
