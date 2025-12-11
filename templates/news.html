@@ -45,22 +45,54 @@
         <h1>Останні Новини Університету</h1>
 
         <div class="card news-feed">
-            <h2>Оголошення</h2>
-            <ul>
-                <li>📌 Завтра пари за розкладом</li>
-                <li>📌 До 10 числа треба здати лабораторні</li>
-                <li>📌 Студентська рада проводить опитування</li>
-            </ul>
+            <h2>🥳 Студентська Вечірка!</h2>
+            <p><strong>Коли:</strong> 18.12.2025 о 20:00. <strong>Де:</strong> Головний корпус, актовий зал.</p>
+            <p>Запрошуємо всіх студентів відсвяткувати успішне завершення семестру. Квитки можна придбати у профспілкомі.</p>
+            <a href="#" class="read-more" onclick="openModal('party')">Читати більше</a>
+        </div>
+
+        <div class="card news-feed">
+            <h2>🔬 Відкриття Нової Лабораторії</h2>
+            <p><strong>Коли:</strong> Завтра, 12.11.2025 о 16:30. <strong>Де:</strong> Корпус №20, ауд. 305.</p>
+            <p>Буде презентовано новітнє обладнання для кафедри електроніки. Запрошуємо викладачів та зацікавлених студентів!</p>
+            <a href="#" class="read-more" onclick="openModal('lab')">Читати більше</a>
+        </div>
+
+        <div class="card news-feed">
+            <h2 style="color: var(--color-accent);">⚠️ Відключення Води</h2>
+            <p><strong>Де:</strong> Гуртожиток №1. <strong>Час:</strong> Сьогодні, з 18:00 до 20:00.</p>
+            <p>Прохання заздалегідь зробити необхідний запас. Вибачте за тимчасові незручності.</p>
+            <a href="#" class="read-more" onclick="openModal('water')">Читати більше</a>
+        </div>
+
+        <div class="card news-feed">
+            <h2>💳 Нагадування про Оплату</h2>
+            <p><strong>Термін:</strong> До кінця поточного тижня (15.12.2025).</p>
+            <p>Студентам-контрактникам необхідно здійснити оплату за другий семестр, згідно з умовами договору.</p>
+            <a href="#" class="read-more" onclick="openModal('payment')">Читати більше</a>
         </div>
         
         <div class="card news-feed">
-            <h2>Розклад</h2>
-            <p>Зміни в розкладі на наступний тиждень доступні у вашому особистому кабінеті.</p>
+            <h2>🏆 Реєстрація на Спортивні Змагання</h2>
+            <p><strong>Подія:</strong> Міжфакультетський турнір з баскетболу.</p>
+            <p>Заявки приймаються у спортивному клубі до 14.12. Збирай свою команду!</p>
+            <a href="#" class="read-more" onclick="openModal('sport')">Читати більше</a>
         </div>
 
     </main>
 
 </div>
+
+<div id="newsModal" class="modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div id="modalTitle"></div>
+        <div id="modalBody"></div>
+        <a href="#" class="read-more close-link" onclick="closeModal()">Закрити</a>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='modal.js') }}"></script>
 
 </body>
 </html>

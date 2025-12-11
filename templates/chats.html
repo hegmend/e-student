@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Головна | e-Student</title>
+    <title>Чати | e-Student</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -10,31 +10,26 @@
 <div class="container">
 
     <nav class="sidebar">
-        <a href="/dashboard" class="menu-item active" title="Головна"> 
+        <a href="/dashboard" class="menu-item" title="Головна"> 
             <img class="icon" src="{{ url_for('static', filename='home.jpg') }}">
             <span class="menu-text">Головна</span>
         </a>
-
         <a href="/profile" class="menu-item" title="Профіль"> 
             <img class="icon" src="{{ url_for('static', filename='avatar.jpg') }}">
             <span class="menu-text">Профіль</span>
         </a>
-
         <a href="/news" class="menu-item" title="Новини">
             <img class="icon" src="{{ url_for('static', filename='news.jpg') }}">
             <span class="menu-text">Новини</span>
         </a>
-
         <a href="/settings" class="menu-item" title="Налаштування">
             <img class="icon" src="{{ url_for('static', filename='settings.jpg') }}">
             <span class="menu-text">Налаштування</span>
         </a>
-
-        <a href="/chats" class="menu-item" title="Чати">
+        <a href="/chats" class="menu-item active" title="Чати">
             <img class="icon" src="{{ url_for('static', filename='chat.jpg') }}">
             <span class="menu-text">Чати</span>
         </a>
-
         <a href="{{ url_for('logout') }}" class="menu-item logout" title="Вийти">
             <img class="icon" src="{{ url_for('static', filename='logout.jpg') }}">
             <span class="menu-text">Вийти</span>
@@ -42,42 +37,34 @@
     </nav>
 
     <main class="main-content">
-        <h1>Вітаємо, {{ user[1] }}! 👋</h1>
-        
-        <div class="card profile-card">
-            <img class="avatar" src="{{ url_for('static', filename='avatar.jpg') }}"> 
-            <div class="info">
-                <h2>{{ user[1] }}</h2> 
-                <p>Група: **{{ user[4] }}**</p>
-                <p>Email: {{ user[2] }}</p>
-            </div>
+        <h1>💬 Активні Чати</h1>
+
+        <div class="chat-grid">
+            <a href="#" class="chat-item card">
+                <span class="chat-icon">🧑‍💻</span>
+                <h3>Група: ПП-11</h3>
+                <p>Основний чат поточного курсу</p>
+            </a>
+
+            <a href="#" class="chat-item card">
+                <span class="chat-icon">🇬🇧</span>
+                <h3>Англійська Мова (пр. гр.)</h3>
+                <p>Чат для обговорення завдань</p>
+            </a>
+
+            <a href="#" class="chat-item card">
+                <span class="chat-icon">📣</span>
+                <h3>Студентська Рада</h3>
+                <p>Оголошення та ініціативи</p>
+            </a>
+
+            <a href="#" class="chat-item card">
+                <span class="chat-icon">📚</span>
+                <h3>Обмін Матеріалами (Вільний)</h3>
+                <p>Обмін конспектами та посібниками</p>
+            </a>
         </div>
 
-        <h2>Ваш статус</h2>
-        <div class="kpi-grid">
-            <div class="card kpi-card">
-                <h3>Середній Бал</h3>
-                <p class="kpi-value">22.5</p>
-            </div>
-            <div class="card kpi-card">
-                <h3>Борги</h3>
-                <p class="kpi-value">0</p>
-            </div>
-            <div class="card kpi-card">
-                <h3>Занять сьогодні</h3>
-                <p class="kpi-value">2 пари</p>
-            </div>
-        </div>
-
-        <div class="card news-overview">
-            <h2>📢 Свіжі оголошення</h2>
-            <ul>
-                <li>**УВАГА:** До 10 числа треба здати лабораторні.</li>
-                <li>Завтра пари за розкладом.</li>
-                <li><a href="/news">Переглянути всі новини...</a></li>
-            </ul>
-        </div>
-        
     </main>
 
 </div>

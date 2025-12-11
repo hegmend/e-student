@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 import sqlite3
 import os
 
@@ -7,10 +7,8 @@ app.secret_key = "somesecretkey"
 
 # --- CREATE DB ---
 def init_db():
-    # Змінюємо 'database.db' на 'students.db' для коректності з вашим файлом у VS Code
     with sqlite3.connect("students.db") as conn: 
         c = conn.cursor()
-        # Примітка: Ваша таблиця називається 'users', і це співпадає з вашим .db файлом
         c.execute("""
         CREATE TABLE IF NOT EXISTS users(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,7 +24,6 @@ init_db()
 
 # --- Helper для підключення ---
 def get_connection():
-    # Змінюємо 'database.db' на 'students.db'
     return sqlite3.connect("students.db", timeout=10)
 
 # --- ROUTES ---
@@ -71,7 +68,6 @@ def login():
             user = c.fetchone()
 
         if user:
-            # Тут user - це кортеж: (id, name, email, password, group_name)
             session["user"] = user 
             return redirect("/dashboard")
         else:
@@ -79,35 +75,43 @@ def login():
 
     return render_template("login.html")
 
-@app.route("/dashboard")
-def dashboard():
-    if "user" not in session:
-        return redirect("/login")
-
-    user = session["user"]
-    return render_template("dashboard.html", user=user)
-
 # ======================================================
-# НОВІ МАРШРУТИ ДЛЯ ПРОФІЛЮ ТА НОВИН
+# МАРШРУТИ З ПЕРЕВІРКОЮ АВТОРИЗАЦІЇ
 # ======================================================
 
-@app.route("/profile")
-def profile():
+def check_auth_and_render(template_name):
     if "user" not in session:
         return redirect("/login")
     
-    # Інформація про користувача потрібна для заповнення profile.html
     user = session["user"]
-    return render_template("profile.html", user=user)
+    # Передаємо user в шаблон для доступу до даних (наприклад, user[1] - ім'я)
+    return render_template(template_name, user=user)
+
+@app.route("/dashboard")
+def dashboard():
+    return check_auth_and_render("dashboard.html")
+
+@app.route("/profile")
+def profile():
+    return check_auth_and_render("profile.html")
 
 @app.route("/news")
 def news():
-    if "user" not in session:
-        return redirect("/login")
-        
-    # Інформація про користувача потрібна для навігації в news.html
-    user = session["user"]
-    return render_template("news.html", user=user)
+    return check_auth_and_render("news.html")
+
+@app.route("/settings")
+def settings():
+    # Це новий маршрут
+    return check_auth_and_render("settings.html")
+
+@app.route("/chats")
+def chats():
+    # Це новий маршрут
+    return check_auth_and_render("chats.html")
+
+# ======================================================
+# ВИХІД
+# ======================================================
 
 @app.route("/logout")
 def logout():
